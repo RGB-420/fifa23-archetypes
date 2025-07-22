@@ -4,23 +4,20 @@ import plotly.subplots as sp
 def plot_archetypes_radar(cluster_means, radar_features, archetype_names, position_group):
     """
     Plots radar charts for all archetypes in a single subplot figure.
-
-    Parameters:
-        cluster_means (pd.DataFrame): Cluster means (features as columns)
-        radar_features (list): Features to plot (axes of radar)
-        archetype_names (dict): Mapping {cluster_id: archetype_name}
-        position_group (str): Position group name for the title ('DEF', 'MID', 'FWD')
     """
-    # Create subplots grid
+    # Crear subplots grid
     fig = sp.make_subplots(
         rows=2, cols=3,
         specs=[[{'type': 'polar'}, {'type': 'polar'}, {'type': 'polar'}],
                [{'type': 'polar'}, {'type': 'polar'}, None]],
-        subplot_titles=list(archetype_names.values())
+        subplot_titles=list(archetype_names.values()),
+        horizontal_spacing=0.15,  # ligeramente menos espacio horizontal
+        vertical_spacing=0.05     # menos espacio vertical entre filas
     )
 
     # Map clusters to subplot positions
     row_col_map = [(1, 1), (1, 2), (1, 3), (2, 1), (2, 2)]
+    colors = ['#636EFA', '#EF553B', '#00CC96', '#AB63FA', '#FFA15A']
 
     # Add radar chart for each archetype
     for i, (cluster_id, archetype) in enumerate(archetype_names.items()):
@@ -30,16 +27,27 @@ def plot_archetypes_radar(cluster_means, radar_features, archetype_names, positi
                 r=cluster_means.loc[cluster_id, radar_features].values,
                 theta=radar_features,
                 fill='toself',
-                name=archetype
+                name=archetype,
+                opacity=0.8,
+                line=dict(color=colors[i], width=2)
             ),
             row=row, col=col
         )
 
-    # Update layout
+    # Ajustar layout
     fig.update_layout(
-        height=800, width=1200,
-        title_text=f"FIFA23 {position_group} Archetypes (Radar Charts)",
-        showlegend=False
+        height=1000, width=1500,
+        title=dict(
+            text=f"FIFA23 {position_group} Archetypes (Radar Charts)",
+            font=dict(size=24, family="Arial Black")
+        ),
+        showlegend=False,
+        margin=dict(t=120, b=50, l=100, r=50),  # ⬅️ más margen izquierdo (l=100)
+        polar=dict(
+            radialaxis=dict(visible=True, showticklabels=True, ticks='')
+        )
     )
 
+    fig.update_annotations(font=dict(size=18))
     fig.show()
+
