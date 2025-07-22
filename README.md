@@ -7,7 +7,7 @@ This project analyzes FIFA 23 player data to identify **15 archetypes** (5 for e
 ## 📊 Example of Defender Archetypes
 Here’s a radar chart showing the 5 archetypes for defenders:
 
-![FIFA23 Defender Archetypes](assets/defenders_radar.png)
+![FIFA23 Defender Archetypes](assets/defense_radar.png)
 
 ---
 
